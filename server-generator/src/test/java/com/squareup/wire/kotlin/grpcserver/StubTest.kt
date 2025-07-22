@@ -188,7 +188,6 @@ class StubTest {
         )
     }
 
-
     @Test
     fun `generates stubs for blocking bidi streaming rpc`() {
         val code = stubCodeForBlocking(
