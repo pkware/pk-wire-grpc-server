@@ -104,7 +104,7 @@ object StubGenerator {
                             this,
                             service,
                             ClassName("io.grpc.stub", "AbstractStub"),
-                            false
+                            false,
                         )
                         addStubRpcCalls(generator, this, service, options)
                     }
