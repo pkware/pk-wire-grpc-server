@@ -27,6 +27,10 @@ import com.squareup.wire.schema.Rpc
 import com.squareup.wire.schema.Service
 
 object BlockingStubGenerator {
+
+    private val clientCalls = ClassName("io.grpc.stub", "ClientCalls")
+    private val blockingClientCall = ClassName("io.grpc.stub", "BlockingClientCall")
+
     internal fun addBlockingStub(
         generator: ClassNameGenerator,
         builder: TypeSpec.Builder,
@@ -69,37 +73,105 @@ object BlockingStubGenerator {
 
     private fun TypeSpec.Builder.addBlockingStubRpcCalls(generator: ClassNameGenerator, service: Service): TypeSpec.Builder {
         service.rpcs
-            .filter { !it.responseStreaming }
             .forEach { rpc ->
-                val codeBlock = CodeBlock.of(
-                    "return %M(channel, get${rpc.name}Method(), callOptions, request)",
-                    MemberName(
-                        enclosingClassName = ClassName("io.grpc.stub", "ClientCalls"),
-                        simpleName = if (rpc.requestStreaming) {
-                            "blockingServerStreamingCall"
-                        } else {
-                            "blockingUnaryCall"
-                        },
-                    ),
-                )
-                this.addFunction(
-                    FunSpec.builder(rpc.name)
-                        .addBlockingStubSignature(generator, rpc)
-                        .addCode(codeBlock)
-                        .build(),
-                )
+                val functions = when {
+                    !rpc.requestStreaming && !rpc.responseStreaming -> unary(generator, rpc)
+                    rpc.requestStreaming && !rpc.responseStreaming -> clientStreaming(generator, rpc)
+                    !rpc.requestStreaming -> serverStreaming(generator, rpc)
+                    else -> bidi(generator, rpc)
+                }
+
+                functions.forEach(::addFunction)
             }
         return this
     }
 
-    private fun FunSpec.Builder.addBlockingStubSignature(generator: ClassNameGenerator, rpc: Rpc): FunSpec.Builder = this
-        .addParameter("request", ClassName.bestGuess(generator.classNameFor(rpc.requestType!!).toString()))
-        .returns(
-            if (rpc.requestStreaming) {
-                Iterator::class.asClassName()
-                    .parameterizedBy(generator.classNameFor(rpc.responseType!!))
-            } else {
-                generator.classNameFor(rpc.responseType!!)
-            },
+    private fun unary(generator: ClassNameGenerator, rpc: Rpc): List<FunSpec> {
+        val blockingUnaryCall = MemberName(enclosingClassName = clientCalls, simpleName = "blockingUnaryCall")
+        val codeBlock = CodeBlock.of(
+            "return %M(channel, get${rpc.name}Method(), callOptions, request)",
+            blockingUnaryCall,
         )
+        return listOf(
+            FunSpec.builder(rpc.name)
+                .addParameter("request", ClassName.bestGuess(generator.classNameFor(rpc.requestType!!).toString()))
+                .returns(generator.classNameFor(rpc.responseType!!))
+                .addCode(codeBlock)
+                .build(),
+        )
+    }
+
+    private fun serverStreaming(generator: ClassNameGenerator, rpc: Rpc): List<FunSpec> {
+        val blockingServerStreamingCall = MemberName(enclosingClassName = clientCalls, simpleName = "blockingServerStreamingCall")
+        val codeBlock1 = CodeBlock.of(
+            "return %M(channel, get${rpc.name}Method(), callOptions, request)",
+            blockingServerStreamingCall,
+        )
+        val v1 = FunSpec.builder(rpc.name)
+            .addParameter("request", ClassName.bestGuess(generator.classNameFor(rpc.requestType!!).toString()))
+            .returns(Iterator::class.asClassName().parameterizedBy(generator.classNameFor(rpc.responseType!!)))
+            .addCode(codeBlock1)
+            .build()
+
+        val blockingV2ServerStreamingCall = MemberName(enclosingClassName = clientCalls, simpleName = "blockingV2ServerStreamingCall")
+        val codeBlock2 = CodeBlock.of(
+            "return %M(channel, get${rpc.name}Method(), callOptions, request)",
+            blockingV2ServerStreamingCall,
+        )
+
+        // We have to give this method a different name to avoid conflicts.
+        // Since this method returns a BlockingClientCall, suffix it with "Call".
+        val v2 = FunSpec.builder("${rpc.name}Call")
+            .addParameter("request", ClassName.bestGuess(generator.classNameFor(rpc.requestType!!).toString()))
+            .returns(
+                blockingClientCall.parameterizedBy(
+                    ClassName.bestGuess(generator.classNameFor(rpc.requestType!!).toString()),
+                    generator.classNameFor(rpc.responseType!!),
+                ),
+            )
+            .addCode(codeBlock2)
+            .build()
+
+        return listOf(v1, v2)
+    }
+
+    private fun clientStreaming(generator: ClassNameGenerator, rpc: Rpc): List<FunSpec> {
+        val blockingClientStreamingCall = MemberName(enclosingClassName = clientCalls, simpleName = "blockingClientStreamingCall")
+        val codeBlock = CodeBlock.of(
+            "return %M(channel, get${rpc.name}Method(), callOptions)",
+            blockingClientStreamingCall,
+        )
+
+        return listOf(
+            FunSpec.builder(rpc.name)
+                .returns(
+                    blockingClientCall.parameterizedBy(
+                        ClassName.bestGuess(generator.classNameFor(rpc.requestType!!).toString()),
+                        generator.classNameFor(rpc.responseType!!),
+                    ),
+                )
+                .addCode(codeBlock)
+                .build(),
+        )
+    }
+
+    private fun bidi(generator: ClassNameGenerator, rpc: Rpc): List<FunSpec> {
+        val blockingBidiStreamingCall = MemberName(enclosingClassName = clientCalls, simpleName = "blockingBidiStreamingCall")
+        val codeBlock = CodeBlock.of(
+            "return %M(channel, get${rpc.name}Method(), callOptions)",
+            blockingBidiStreamingCall,
+        )
+
+        return listOf(
+            FunSpec.builder(rpc.name)
+                .returns(
+                    blockingClientCall.parameterizedBy(
+                        ClassName.bestGuess(generator.classNameFor(rpc.requestType!!).toString()),
+                        generator.classNameFor(rpc.responseType!!),
+                    ),
+                )
+                .addCode(codeBlock)
+                .build(),
+        )
+    }
 }
