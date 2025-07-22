@@ -14,6 +14,8 @@ import io.grpc.ServerServiceDefinition
 import io.grpc.ServiceDescriptor
 import io.grpc.ServiceDescriptor.newBuilder
 import io.grpc.stub.AbstractStub
+import io.grpc.stub.BlockingClientCall
+import io.grpc.stub.ClientCalls.blockingBidiStreamingCall
 import io.grpc.stub.StreamObserver
 import java.io.InputStream
 import java.lang.Class
@@ -162,5 +164,8 @@ public object TestServiceWireGrpc {
 
     override fun build(channel: Channel, callOptions: CallOptions): TestServiceBlockingStub =
         TestServiceBlockingStub(channel, callOptions)
+
+    public fun TestRPC(): BlockingClientCall<Test, Test> = blockingBidiStreamingCall(channel,
+        getTestRPCMethod(), callOptions)
   }
 }

@@ -13,6 +13,9 @@ import io.grpc.ServerServiceDefinition
 import io.grpc.ServiceDescriptor
 import io.grpc.ServiceDescriptor.newBuilder
 import io.grpc.stub.AbstractStub
+import io.grpc.stub.BlockingClientCall
+import io.grpc.stub.ClientCalls.blockingServerStreamingCall
+import io.grpc.stub.ClientCalls.blockingV2ServerStreamingCall
 import io.grpc.stub.StreamObserver
 import java.io.InputStream
 import java.lang.Class
@@ -21,6 +24,7 @@ import java.util.concurrent.ExecutorService
 import kotlin.Array
 import kotlin.String
 import kotlin.Unit
+import kotlin.collections.Iterator
 import kotlin.collections.Map
 import kotlin.collections.Set
 import kotlin.jvm.Volatile
@@ -159,5 +163,11 @@ public object TestServiceWireGrpc {
 
     override fun build(channel: Channel, callOptions: CallOptions): TestServiceBlockingStub =
         TestServiceBlockingStub(channel, callOptions)
+
+    public fun TestRPC(request: Test): Iterator<Test> = blockingServerStreamingCall(channel,
+        getTestRPCMethod(), callOptions, request)
+
+    public fun TestRPCCall(request: Test): BlockingClientCall<Test, Test> =
+        blockingV2ServerStreamingCall(channel, getTestRPCMethod(), callOptions, request)
   }
 }
