@@ -1,7 +1,3 @@
-public final class com/squareup/wire/kotlin/grpcserver/BindableAdapterGenerator {
-	public static final field INSTANCE Lcom/squareup/wire/kotlin/grpcserver/BindableAdapterGenerator;
-}
-
 public final class com/squareup/wire/kotlin/grpcserver/BlockingStubGenerator {
 	public static final field INSTANCE Lcom/squareup/wire/kotlin/grpcserver/BlockingStubGenerator;
 }

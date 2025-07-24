@@ -3,7 +3,6 @@ package test
 
 import com.google.protobuf.DescriptorProtos
 import com.google.protobuf.Descriptors
-import com.squareup.wire.kotlin.grpcserver.MessageSourceAdapter
 import com.squareup.wire.kotlin.grpcserver.WireBindableService
 import com.squareup.wire.kotlin.grpcserver.WireMethodMarshaller
 import io.grpc.CallOptions
@@ -19,7 +18,6 @@ import io.grpc.stub.StreamObserver
 import java.io.InputStream
 import java.lang.Class
 import java.lang.UnsupportedOperationException
-import java.util.concurrent.ExecutorService
 import kotlin.Array
 import kotlin.String
 import kotlin.collections.Map
@@ -127,20 +125,6 @@ public object TestServiceWireGrpc {
       override fun marshalledClass(): Class<Test> = Test::class.java
 
       override fun parse(stream: InputStream): Test = Test.ADAPTER.decode(stream)
-    }
-  }
-
-  public class BindableAdapter(
-    private val streamExecutor: ExecutorService,
-    private val service: () -> TestServiceBlockingServer,
-  ) : TestServiceImplBase() {
-    override fun TestRPC(response: StreamObserver<Test>): StreamObserver<Test> {
-      val requestStream = MessageSourceAdapter<Test>()
-      streamExecutor.submit {
-        response.onNext(service().TestRPC(requestStream))
-        response.onCompleted()
-      }
-      return requestStream
     }
   }
 
