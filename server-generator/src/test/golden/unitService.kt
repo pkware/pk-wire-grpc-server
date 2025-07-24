@@ -20,8 +20,6 @@ import kotlin.Unit
 import kotlin.collections.Map
 import kotlin.collections.Set
 import kotlin.coroutines.CoroutineContext
-import kotlin.coroutines.EmptyCoroutineContext
-import kotlin.jvm.JvmOverloads
 import kotlin.jvm.Volatile
 
 public object MyServiceWireGrpc {
@@ -133,13 +131,6 @@ public object MyServiceWireGrpc {
       override fun parse(stream: InputStream): Unit =
           com.squareup.wire.ProtoAdapter.EMPTY.decode(stream)
     }
-  }
-
-  public class BindableAdapter @JvmOverloads constructor(
-    context: CoroutineContext = EmptyCoroutineContext,
-    private val service: () -> MyServiceServer,
-  ) : MyServiceImplBase(context) {
-    override suspend fun doSomething(request: Unit): Unit = service().doSomething(request)
   }
 
   public class MyServiceStub : AbstractCoroutineStub<MyServiceStub> {
