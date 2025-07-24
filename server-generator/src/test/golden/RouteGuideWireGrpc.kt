@@ -3,8 +3,6 @@ package routeguide
 
 import com.google.protobuf.DescriptorProtos
 import com.google.protobuf.Descriptors
-import com.squareup.wire.kotlin.grpcserver.MessageSinkAdapter
-import com.squareup.wire.kotlin.grpcserver.MessageSourceAdapter
 import com.squareup.wire.kotlin.grpcserver.WireBindableService
 import com.squareup.wire.kotlin.grpcserver.WireMethodMarshaller
 import io.grpc.CallOptions
@@ -24,7 +22,6 @@ import io.grpc.stub.StreamObserver
 import java.io.InputStream
 import java.lang.Class
 import java.lang.UnsupportedOperationException
-import java.util.concurrent.ExecutorService
 import kotlin.Array
 import kotlin.String
 import kotlin.Unit
@@ -285,40 +282,6 @@ public object RouteGuideWireGrpc {
       override fun marshalledClass(): Class<RouteNote> = RouteNote::class.java
 
       override fun parse(stream: InputStream): RouteNote = RouteNote.ADAPTER.decode(stream)
-    }
-  }
-
-  public class BindableAdapter(
-    private val streamExecutor: ExecutorService,
-    private val GetFeature: () -> RouteGuideGetFeatureBlockingServer,
-    private val ListFeatures: () -> RouteGuideListFeaturesBlockingServer,
-    private val RecordRoute: () -> RouteGuideRecordRouteBlockingServer,
-    private val RouteChat: () -> RouteGuideRouteChatBlockingServer,
-  ) : RouteGuideImplBase() {
-    override fun GetFeature(request: Point, response: StreamObserver<Feature>) {
-      response.onNext(GetFeature().GetFeature(request))
-      response.onCompleted()
-    }
-
-    override fun ListFeatures(request: Rectangle, response: StreamObserver<Feature>) {
-      ListFeatures().ListFeatures(request, MessageSinkAdapter(response))
-    }
-
-    override fun RecordRoute(response: StreamObserver<RouteSummary>): StreamObserver<Point> {
-      val requestStream = MessageSourceAdapter<Point>()
-      streamExecutor.submit {
-        response.onNext(RecordRoute().RecordRoute(requestStream))
-        response.onCompleted()
-      }
-      return requestStream
-    }
-
-    override fun RouteChat(response: StreamObserver<RouteNote>): StreamObserver<RouteNote> {
-      val requestStream = MessageSourceAdapter<RouteNote>()
-      streamExecutor.submit {
-        RouteChat().RouteChat(requestStream, MessageSinkAdapter(response))
-      }
-      return requestStream
     }
   }
 

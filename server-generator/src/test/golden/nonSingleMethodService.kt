@@ -17,7 +17,6 @@ import io.grpc.stub.StreamObserver
 import java.io.InputStream
 import java.lang.Class
 import java.lang.UnsupportedOperationException
-import java.util.concurrent.ExecutorService
 import kotlin.Array
 import kotlin.String
 import kotlin.Unit
@@ -170,21 +169,6 @@ public object FooServiceWireGrpc {
       override fun marshalledClass(): Class<Response> = Response::class.java
 
       override fun parse(stream: InputStream): Response = Response.ADAPTER.decode(stream)
-    }
-  }
-
-  public class BindableAdapter(
-    private val streamExecutor: ExecutorService,
-    private val service: () -> FooServiceBlockingServer,
-  ) : FooServiceImplBase() {
-    override fun Call1(request: Request, response: StreamObserver<Response>) {
-      response.onNext(service().Call1(request))
-      response.onCompleted()
-    }
-
-    override fun Call2(request: Request, response: StreamObserver<Response>) {
-      response.onNext(service().Call2(request))
-      response.onCompleted()
     }
   }
 

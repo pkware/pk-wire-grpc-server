@@ -18,7 +18,6 @@ package com.squareup.wire.kotlin.grpcserver
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.TypeName
 import com.squareup.kotlinpoet.TypeSpec
-import com.squareup.wire.kotlin.grpcserver.BindableAdapterGenerator.addBindableAdapter
 import com.squareup.wire.kotlin.grpcserver.BlockingStubGenerator.addBlockingStub
 import com.squareup.wire.kotlin.grpcserver.ImplBaseGenerator.addImplBase
 import com.squareup.wire.kotlin.grpcserver.MethodDescriptorGenerator.addMethodDescriptor
@@ -46,7 +45,6 @@ class KotlinGrpcGenerator(
         addServiceDescriptor(builder, service, protoFile, schema)
         service.rpcs.forEach { rpc -> addMethodDescriptor(classNameGenerator, builder, service, rpc) }
         addImplBase(classNameGenerator, builder, service, options)
-        addBindableAdapter(classNameGenerator, builder, service, options)
         addStub(classNameGenerator, builder, service, options)
         addBlockingStub(classNameGenerator, builder, service, options)
 

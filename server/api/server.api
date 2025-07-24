@@ -1,10 +1,3 @@
-public final class com/squareup/wire/kotlin/grpcserver/FlowAdapter {
-	public static final field INSTANCE Lcom/squareup/wire/kotlin/grpcserver/FlowAdapter;
-	public final fun bidiStream (Lkotlin/coroutines/CoroutineContext;Lkotlinx/coroutines/flow/Flow;Lkotlin/jvm/functions/Function3;)Lkotlinx/coroutines/flow/Flow;
-	public final fun clientStream (Lkotlin/coroutines/CoroutineContext;Lkotlinx/coroutines/flow/Flow;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public final fun serverStream (Lkotlin/coroutines/CoroutineContext;Ljava/lang/Object;Lkotlin/jvm/functions/Function3;)Lkotlinx/coroutines/flow/Flow;
-}
-
 public final class com/squareup/wire/kotlin/grpcserver/MessageSinkAdapter : com/squareup/wire/MessageSink {
 	public fun <init> (Lio/grpc/stub/StreamObserver;)V
 	public fun cancel ()V
