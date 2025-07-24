@@ -14,8 +14,12 @@ import io.grpc.ServerServiceDefinition
 import io.grpc.ServiceDescriptor
 import io.grpc.ServiceDescriptor.newBuilder
 import io.grpc.stub.AbstractStub
+import io.grpc.stub.BlockingClientCall
+import io.grpc.stub.ClientCalls.blockingBidiStreamingCall
+import io.grpc.stub.ClientCalls.blockingClientStreamingCall
 import io.grpc.stub.ClientCalls.blockingServerStreamingCall
 import io.grpc.stub.ClientCalls.blockingUnaryCall
+import io.grpc.stub.ClientCalls.blockingV2ServerStreamingCall
 import io.grpc.stub.StreamObserver
 import java.io.InputStream
 import java.lang.Class
@@ -356,7 +360,16 @@ public object RouteGuideWireGrpc {
     public fun GetFeature(request: Point): Feature = blockingUnaryCall(channel,
         getGetFeatureMethod(), callOptions, request)
 
-    public fun RecordRoute(request: Point): Iterator<RouteSummary> =
-        blockingServerStreamingCall(channel, getRecordRouteMethod(), callOptions, request)
+    public fun ListFeatures(request: Rectangle): Iterator<Feature> =
+        blockingServerStreamingCall(channel, getListFeaturesMethod(), callOptions, request)
+
+    public fun ListFeaturesCall(request: Rectangle): BlockingClientCall<Rectangle, Feature> =
+        blockingV2ServerStreamingCall(channel, getListFeaturesMethod(), callOptions, request)
+
+    public fun RecordRoute(): BlockingClientCall<Point, RouteSummary> =
+        blockingClientStreamingCall(channel, getRecordRouteMethod(), callOptions)
+
+    public fun RouteChat(): BlockingClientCall<RouteNote, RouteNote> =
+        blockingBidiStreamingCall(channel, getRouteChatMethod(), callOptions)
   }
 }
