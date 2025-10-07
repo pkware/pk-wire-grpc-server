@@ -16,7 +16,6 @@ wire {
     rpcCallStyle = "blocking"
     rpcRole = "server"
     singleMethodServices = true
-    grpcServerCompatible = true
   }
 }
 

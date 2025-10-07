@@ -47,7 +47,6 @@ public object RouteGuideWireGrpc {
   private val descriptorMap: Map<String, DescriptorProtos.FileDescriptorProto> =
       createDescriptorMap0()
 
-
   @Volatile
   private var getGetFeatureMethod: MethodDescriptor<Point, Feature>? = null
 
@@ -68,8 +67,7 @@ public object RouteGuideWireGrpc {
 
   private fun fileDescriptor(path: String, visited: Set<String>): Descriptors.FileDescriptor {
     val proto = descriptorMap[path]!!
-    val deps = proto.dependencyList.filter { !visited.contains(it) }.map { fileDescriptor(it,
-        visited + path) }
+    val deps = proto.dependencyList.filter { !visited.contains(it) }.map { fileDescriptor(it, visited + path) }
     return Descriptors.FileDescriptor.buildFrom(proto, deps.toTypedArray())
   }
 
@@ -209,24 +207,18 @@ public object RouteGuideWireGrpc {
 
   public fun newStub(channel: Channel): RouteGuideStub = RouteGuideStub(channel)
 
-  public fun newBlockingStub(channel: Channel): RouteGuideBlockingStub =
-      RouteGuideBlockingStub(channel)
+  public fun newBlockingStub(channel: Channel): RouteGuideBlockingStub = RouteGuideBlockingStub(channel)
 
   public abstract class RouteGuideImplBase : WireBindableService {
-    public open fun GetFeature(request: Point, response: StreamObserver<Feature>): Unit = throw
-        UnsupportedOperationException()
+    public open fun GetFeature(request: Point, response: StreamObserver<Feature>): Unit = throw UnsupportedOperationException()
 
-    public open fun ListFeatures(request: Rectangle, response: StreamObserver<Feature>): Unit =
-        throw UnsupportedOperationException()
+    public open fun ListFeatures(request: Rectangle, response: StreamObserver<Feature>): Unit = throw UnsupportedOperationException()
 
-    public open fun RecordRoute(response: StreamObserver<RouteSummary>): StreamObserver<Point> =
-        throw UnsupportedOperationException()
+    public open fun RecordRoute(response: StreamObserver<RouteSummary>): StreamObserver<Point> = throw UnsupportedOperationException()
 
-    public open fun RouteChat(response: StreamObserver<RouteNote>): StreamObserver<RouteNote> =
-        throw UnsupportedOperationException()
+    public open fun RouteChat(response: StreamObserver<RouteNote>): StreamObserver<RouteNote> = throw UnsupportedOperationException()
 
-    override fun bindService(): ServerServiceDefinition =
-        ServerServiceDefinition.builder(getServiceDescriptor()).addMethod(
+    override fun bindService(): ServerServiceDefinition = ServerServiceDefinition.builder(getServiceDescriptor()).addMethod(
               getGetFeatureMethod(),
               serverCallsAsyncUnaryCall(this@RouteGuideImplBase::GetFeature)
             ).addMethod(
@@ -249,8 +241,7 @@ public object RouteGuideWireGrpc {
     }
 
     public class FeatureMarshaller : WireMethodMarshaller<Feature> {
-      override fun stream(`value`: Feature): InputStream =
-          Feature.ADAPTER.encode(value).inputStream()
+      override fun stream(`value`: Feature): InputStream = Feature.ADAPTER.encode(value).inputStream()
 
       override fun marshalledClass(): Class<Feature> = Feature::class.java
 
@@ -258,8 +249,7 @@ public object RouteGuideWireGrpc {
     }
 
     public class RectangleMarshaller : WireMethodMarshaller<Rectangle> {
-      override fun stream(`value`: Rectangle): InputStream =
-          Rectangle.ADAPTER.encode(value).inputStream()
+      override fun stream(`value`: Rectangle): InputStream = Rectangle.ADAPTER.encode(value).inputStream()
 
       override fun marshalledClass(): Class<Rectangle> = Rectangle::class.java
 
@@ -267,8 +257,7 @@ public object RouteGuideWireGrpc {
     }
 
     public class RouteSummaryMarshaller : WireMethodMarshaller<RouteSummary> {
-      override fun stream(`value`: RouteSummary): InputStream =
-          RouteSummary.ADAPTER.encode(value).inputStream()
+      override fun stream(`value`: RouteSummary): InputStream = RouteSummary.ADAPTER.encode(value).inputStream()
 
       override fun marshalledClass(): Class<RouteSummary> = RouteSummary::class.java
 
@@ -276,8 +265,7 @@ public object RouteGuideWireGrpc {
     }
 
     public class RouteNoteMarshaller : WireMethodMarshaller<RouteNote> {
-      override fun stream(`value`: RouteNote): InputStream =
-          RouteNote.ADAPTER.encode(value).inputStream()
+      override fun stream(`value`: RouteNote): InputStream = RouteNote.ADAPTER.encode(value).inputStream()
 
       override fun marshalledClass(): Class<RouteNote> = RouteNote::class.java
 
@@ -290,26 +278,19 @@ public object RouteGuideWireGrpc {
 
     internal constructor(channel: Channel, callOptions: CallOptions) : super(channel, callOptions)
 
-    override fun build(channel: Channel, callOptions: CallOptions): RouteGuideStub =
-        RouteGuideStub(channel, callOptions)
+    override fun build(channel: Channel, callOptions: CallOptions): RouteGuideStub = RouteGuideStub(channel, callOptions)
 
     public fun GetFeature(request: Point, response: StreamObserver<Feature>) {
-      clientCallsAsyncUnaryCall(channel.newCall(getGetFeatureMethod(), callOptions), request,
-          response)
+      clientCallsAsyncUnaryCall(channel.newCall(getGetFeatureMethod(), callOptions), request, response)
     }
 
     public fun ListFeatures(request: Rectangle, response: StreamObserver<Feature>) {
-      clientCallsAsyncServerStreamingCall(channel.newCall(getListFeaturesMethod(), callOptions),
-          request, response)
+      clientCallsAsyncServerStreamingCall(channel.newCall(getListFeaturesMethod(), callOptions), request, response)
     }
 
-    public fun RecordRoute(response: StreamObserver<RouteSummary>): StreamObserver<Point> =
-        clientCallsAsyncClientStreamingCall(channel.newCall(getRecordRouteMethod(), callOptions),
-        response)
+    public fun RecordRoute(response: StreamObserver<RouteSummary>): StreamObserver<Point> = clientCallsAsyncClientStreamingCall(channel.newCall(getRecordRouteMethod(), callOptions), response)
 
-    public fun RouteChat(response: StreamObserver<RouteNote>): StreamObserver<RouteNote> =
-        clientCallsAsyncBidiStreamingCall(channel.newCall(getRouteChatMethod(), callOptions),
-        response)
+    public fun RouteChat(response: StreamObserver<RouteNote>): StreamObserver<RouteNote> = clientCallsAsyncBidiStreamingCall(channel.newCall(getRouteChatMethod(), callOptions), response)
   }
 
   public class RouteGuideBlockingStub : AbstractStub<RouteGuideBlockingStub> {
@@ -317,22 +298,16 @@ public object RouteGuideWireGrpc {
 
     internal constructor(channel: Channel, callOptions: CallOptions) : super(channel, callOptions)
 
-    override fun build(channel: Channel, callOptions: CallOptions): RouteGuideBlockingStub =
-        RouteGuideBlockingStub(channel, callOptions)
+    override fun build(channel: Channel, callOptions: CallOptions): RouteGuideBlockingStub = RouteGuideBlockingStub(channel, callOptions)
 
-    public fun GetFeature(request: Point): Feature = blockingUnaryCall(channel,
-        getGetFeatureMethod(), callOptions, request)
+    public fun GetFeature(request: Point): Feature = blockingUnaryCall(channel, getGetFeatureMethod(), callOptions, request)
 
-    public fun ListFeatures(request: Rectangle): Iterator<Feature> =
-        blockingServerStreamingCall(channel, getListFeaturesMethod(), callOptions, request)
+    public fun ListFeatures(request: Rectangle): Iterator<Feature> = blockingServerStreamingCall(channel, getListFeaturesMethod(), callOptions, request)
 
-    public fun ListFeaturesCall(request: Rectangle): BlockingClientCall<Rectangle, Feature> =
-        blockingV2ServerStreamingCall(channel, getListFeaturesMethod(), callOptions, request)
+    public fun ListFeaturesCall(request: Rectangle): BlockingClientCall<Rectangle, Feature> = blockingV2ServerStreamingCall(channel, getListFeaturesMethod(), callOptions, request)
 
-    public fun RecordRoute(): BlockingClientCall<Point, RouteSummary> =
-        blockingClientStreamingCall(channel, getRecordRouteMethod(), callOptions)
+    public fun RecordRoute(): BlockingClientCall<Point, RouteSummary> = blockingClientStreamingCall(channel, getRecordRouteMethod(), callOptions)
 
-    public fun RouteChat(): BlockingClientCall<RouteNote, RouteNote> =
-        blockingBidiStreamingCall(channel, getRouteChatMethod(), callOptions)
+    public fun RouteChat(): BlockingClientCall<RouteNote, RouteNote> = blockingBidiStreamingCall(channel, getRouteChatMethod(), callOptions)
   }
 }

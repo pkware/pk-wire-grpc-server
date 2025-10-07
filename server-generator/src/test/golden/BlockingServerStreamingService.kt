@@ -38,7 +38,6 @@ public object TestServiceWireGrpc {
   private val descriptorMap: Map<String, DescriptorProtos.FileDescriptorProto> =
       createDescriptorMap0()
 
-
   @Volatile
   private var getTestRPCMethod: MethodDescriptor<Test, Test>? = null
 
@@ -50,8 +49,7 @@ public object TestServiceWireGrpc {
 
   private fun fileDescriptor(path: String, visited: Set<String>): Descriptors.FileDescriptor {
     val proto = descriptorMap[path]!!
-    val deps = proto.dependencyList.filter { !visited.contains(it) }.map { fileDescriptor(it,
-        visited + path) }
+    val deps = proto.dependencyList.filter { !visited.contains(it) }.map { fileDescriptor(it, visited + path) }
     return Descriptors.FileDescriptor.buildFrom(proto, deps.toTypedArray())
   }
 
@@ -109,15 +107,12 @@ public object TestServiceWireGrpc {
 
   public fun newStub(channel: Channel): TestServiceStub = TestServiceStub(channel)
 
-  public fun newBlockingStub(channel: Channel): TestServiceBlockingStub =
-      TestServiceBlockingStub(channel)
+  public fun newBlockingStub(channel: Channel): TestServiceBlockingStub = TestServiceBlockingStub(channel)
 
   public abstract class TestServiceImplBase : WireBindableService {
-    public open fun TestRPC(request: Test, response: StreamObserver<Test>): Unit = throw
-        UnsupportedOperationException()
+    public open fun TestRPC(request: Test, response: StreamObserver<Test>): Unit = throw UnsupportedOperationException()
 
-    override fun bindService(): ServerServiceDefinition =
-        ServerServiceDefinition.builder(getServiceDescriptor()).addMethod(
+    override fun bindService(): ServerServiceDefinition = ServerServiceDefinition.builder(getServiceDescriptor()).addMethod(
               getTestRPCMethod(),
               serverCallsAsyncServerStreamingCall(this@TestServiceImplBase::TestRPC)
             ).build()
@@ -136,12 +131,10 @@ public object TestServiceWireGrpc {
 
     internal constructor(channel: Channel, callOptions: CallOptions) : super(channel, callOptions)
 
-    override fun build(channel: Channel, callOptions: CallOptions): TestServiceStub =
-        TestServiceStub(channel, callOptions)
+    override fun build(channel: Channel, callOptions: CallOptions): TestServiceStub = TestServiceStub(channel, callOptions)
 
     public fun TestRPC(request: Test, response: StreamObserver<Test>) {
-      clientCallsAsyncServerStreamingCall(channel.newCall(getTestRPCMethod(), callOptions), request,
-          response)
+      clientCallsAsyncServerStreamingCall(channel.newCall(getTestRPCMethod(), callOptions), request, response)
     }
   }
 
@@ -150,13 +143,10 @@ public object TestServiceWireGrpc {
 
     internal constructor(channel: Channel, callOptions: CallOptions) : super(channel, callOptions)
 
-    override fun build(channel: Channel, callOptions: CallOptions): TestServiceBlockingStub =
-        TestServiceBlockingStub(channel, callOptions)
+    override fun build(channel: Channel, callOptions: CallOptions): TestServiceBlockingStub = TestServiceBlockingStub(channel, callOptions)
 
-    public fun TestRPC(request: Test): Iterator<Test> = blockingServerStreamingCall(channel,
-        getTestRPCMethod(), callOptions, request)
+    public fun TestRPC(request: Test): Iterator<Test> = blockingServerStreamingCall(channel, getTestRPCMethod(), callOptions, request)
 
-    public fun TestRPCCall(request: Test): BlockingClientCall<Test, Test> =
-        blockingV2ServerStreamingCall(channel, getTestRPCMethod(), callOptions, request)
+    public fun TestRPCCall(request: Test): BlockingClientCall<Test, Test> = blockingV2ServerStreamingCall(channel, getTestRPCMethod(), callOptions, request)
   }
 }

@@ -18,22 +18,18 @@ public class RouteGuideWireGrpc {
 
     internal constructor(channel: Channel, callOptions: CallOptions) : super(channel, callOptions)
 
-    override fun build(channel: Channel, callOptions: CallOptions): RouteGuideStub =
-        RouteGuideStub(channel, callOptions)
+    override fun build(channel: Channel, callOptions: CallOptions): RouteGuideStub = RouteGuideStub(channel, callOptions)
 
     public fun GetFeature(request: Point, response: StreamObserver<Feature>) {
       asyncUnaryCall(channel.newCall(getGetFeatureMethod(), callOptions), request, response)
     }
 
     public fun ListFeatures(request: Rectangle, response: StreamObserver<Feature>) {
-      asyncServerStreamingCall(channel.newCall(getListFeaturesMethod(), callOptions), request,
-          response)
+      asyncServerStreamingCall(channel.newCall(getListFeaturesMethod(), callOptions), request, response)
     }
 
-    public fun RecordRoute(response: StreamObserver<RouteSummary>): StreamObserver<Point> =
-        asyncClientStreamingCall(channel.newCall(getRecordRouteMethod(), callOptions), response)
+    public fun RecordRoute(response: StreamObserver<RouteSummary>): StreamObserver<Point> = asyncClientStreamingCall(channel.newCall(getRecordRouteMethod(), callOptions), response)
 
-    public fun RouteChat(response: StreamObserver<RouteNote>): StreamObserver<RouteNote> =
-        asyncBidiStreamingCall(channel.newCall(getRouteChatMethod(), callOptions), response)
+    public fun RouteChat(response: StreamObserver<RouteNote>): StreamObserver<RouteNote> = asyncBidiStreamingCall(channel.newCall(getRouteChatMethod(), callOptions), response)
   }
 }

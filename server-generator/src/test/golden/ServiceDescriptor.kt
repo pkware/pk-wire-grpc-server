@@ -20,7 +20,6 @@ public class RouteGuideWireGrpc {
   private val descriptorMap: Map<String, DescriptorProtos.FileDescriptorProto> =
       createDescriptorMap0()
 
-
   private fun descriptorFor(`data`: Array<String>): DescriptorProtos.FileDescriptorProto {
     val str = data.fold(java.lang.StringBuilder()) { b, s -> b.append(s) }.toString()
     val bytes = java.util.Base64.getDecoder().decode(str)
@@ -29,8 +28,7 @@ public class RouteGuideWireGrpc {
 
   private fun fileDescriptor(path: String, visited: Set<String>): Descriptors.FileDescriptor {
     val proto = descriptorMap[path]!!
-    val deps = proto.dependencyList.filter { !visited.contains(it) }.map { fileDescriptor(it,
-        visited + path) }
+    val deps = proto.dependencyList.filter { !visited.contains(it) }.map { fileDescriptor(it, visited + path) }
     return Descriptors.FileDescriptor.buildFrom(proto, deps.toTypedArray())
   }
 
