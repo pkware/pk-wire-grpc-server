@@ -31,7 +31,6 @@ public object MyServiceWireGrpc {
   private val descriptorMap: Map<String, DescriptorProtos.FileDescriptorProto> =
       createDescriptorMap0()
 
-
   @Volatile
   private var getdoSomethingMethod: MethodDescriptor<Unit, Unit>? = null
 
@@ -43,8 +42,7 @@ public object MyServiceWireGrpc {
 
   private fun fileDescriptor(path: String, visited: Set<String>): Descriptors.FileDescriptor {
     val proto = descriptorMap[path]!!
-    val deps = proto.dependencyList.filter { !visited.contains(it) }.map { fileDescriptor(it,
-        visited + path) }
+    val deps = proto.dependencyList.filter { !visited.contains(it) }.map { fileDescriptor(it, visited + path) }
     return Descriptors.FileDescriptor.buildFrom(proto, deps.toTypedArray())
   }
 
@@ -113,8 +111,7 @@ public object MyServiceWireGrpc {
   ) : WireBindableService {
     public open suspend fun doSomething(request: Unit): Unit = throw UnsupportedOperationException()
 
-    override fun bindService(): ServerServiceDefinition =
-        ServerServiceDefinition.builder(getServiceDescriptor()).addMethod(
+    override fun bindService(): ServerServiceDefinition = ServerServiceDefinition.builder(getServiceDescriptor()).addMethod(
                io.grpc.kotlin.ServerCalls.unaryServerMethodDefinition(
                  context = context,
                  descriptor = getdoSomethingMethod(),
@@ -123,13 +120,11 @@ public object MyServiceWireGrpc {
              ).build()
 
     public class EmptyMarshaller : WireMethodMarshaller<Unit> {
-      override fun stream(`value`: Unit): InputStream =
-          com.squareup.wire.ProtoAdapter.EMPTY.encode(value).inputStream()
+      override fun stream(`value`: Unit): InputStream = com.squareup.wire.ProtoAdapter.EMPTY.encode(value).inputStream()
 
       override fun marshalledClass(): Class<Unit> = Unit::class.java
 
-      override fun parse(stream: InputStream): Unit =
-          com.squareup.wire.ProtoAdapter.EMPTY.decode(stream)
+      override fun parse(stream: InputStream): Unit = com.squareup.wire.ProtoAdapter.EMPTY.decode(stream)
     }
   }
 
@@ -138,10 +133,8 @@ public object MyServiceWireGrpc {
 
     internal constructor(channel: Channel, callOptions: CallOptions) : super(channel, callOptions)
 
-    override fun build(channel: Channel, callOptions: CallOptions): MyServiceStub =
-        MyServiceStub(channel, callOptions)
+    override fun build(channel: Channel, callOptions: CallOptions): MyServiceStub = MyServiceStub(channel, callOptions)
 
-    public suspend fun doSomething(request: Unit): Unit = unaryRpc(channel, getdoSomethingMethod(),
-        request, callOptions)
+    public suspend fun doSomething(request: Unit): Unit = unaryRpc(channel, getdoSomethingMethod(), request, callOptions)
   }
 }

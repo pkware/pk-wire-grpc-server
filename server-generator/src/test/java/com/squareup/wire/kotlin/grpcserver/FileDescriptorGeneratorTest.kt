@@ -41,19 +41,21 @@ internal class FileDescriptorGeneratorTest {
             Schema(
                 "test.proto",
                 """
-      |syntax = "proto2";
+      |syntax = "proto3";
       |
       |package test;
       |import "imported.proto";
       |
-      |message Test {}
+      |message Test {
+      |  Imported imported = 1;
+      |}
       |
                 """.trimMargin(),
             ),
             Schema(
                 "imported.proto",
                 """
-      |syntax = "proto2";
+      |syntax = "proto3";
       |
       |package test;
       |

@@ -16,20 +16,15 @@ import kotlin.Unit
 
 public class RouteGuideWireGrpc {
   public abstract class RouteGuideImplBase : WireBindableService {
-    public open fun GetFeature(request: Point, response: StreamObserver<Feature>): Unit = throw
-        UnsupportedOperationException()
+    public open fun GetFeature(request: Point, response: StreamObserver<Feature>): Unit = throw UnsupportedOperationException()
 
-    public open fun ListFeatures(request: Rectangle, response: StreamObserver<Feature>): Unit =
-        throw UnsupportedOperationException()
+    public open fun ListFeatures(request: Rectangle, response: StreamObserver<Feature>): Unit = throw UnsupportedOperationException()
 
-    public open fun RecordRoute(response: StreamObserver<RouteSummary>): StreamObserver<Point> =
-        throw UnsupportedOperationException()
+    public open fun RecordRoute(response: StreamObserver<RouteSummary>): StreamObserver<Point> = throw UnsupportedOperationException()
 
-    public open fun RouteChat(response: StreamObserver<RouteNote>): StreamObserver<RouteNote> =
-        throw UnsupportedOperationException()
+    public open fun RouteChat(response: StreamObserver<RouteNote>): StreamObserver<RouteNote> = throw UnsupportedOperationException()
 
-    override fun bindService(): ServerServiceDefinition =
-        ServerServiceDefinition.builder(getServiceDescriptor()).addMethod(
+    override fun bindService(): ServerServiceDefinition = ServerServiceDefinition.builder(getServiceDescriptor()).addMethod(
               getGetFeatureMethod(),
               asyncUnaryCall(this@RouteGuideImplBase::GetFeature)
             ).addMethod(
@@ -52,8 +47,7 @@ public class RouteGuideWireGrpc {
     }
 
     public class FeatureMarshaller : WireMethodMarshaller<Feature> {
-      override fun stream(`value`: Feature): InputStream =
-          Feature.ADAPTER.encode(value).inputStream()
+      override fun stream(`value`: Feature): InputStream = Feature.ADAPTER.encode(value).inputStream()
 
       override fun marshalledClass(): Class<Feature> = Feature::class.java
 
@@ -61,8 +55,7 @@ public class RouteGuideWireGrpc {
     }
 
     public class RectangleMarshaller : WireMethodMarshaller<Rectangle> {
-      override fun stream(`value`: Rectangle): InputStream =
-          Rectangle.ADAPTER.encode(value).inputStream()
+      override fun stream(`value`: Rectangle): InputStream = Rectangle.ADAPTER.encode(value).inputStream()
 
       override fun marshalledClass(): Class<Rectangle> = Rectangle::class.java
 
@@ -70,8 +63,7 @@ public class RouteGuideWireGrpc {
     }
 
     public class RouteSummaryMarshaller : WireMethodMarshaller<RouteSummary> {
-      override fun stream(`value`: RouteSummary): InputStream =
-          RouteSummary.ADAPTER.encode(value).inputStream()
+      override fun stream(`value`: RouteSummary): InputStream = RouteSummary.ADAPTER.encode(value).inputStream()
 
       override fun marshalledClass(): Class<RouteSummary> = RouteSummary::class.java
 
@@ -79,8 +71,7 @@ public class RouteGuideWireGrpc {
     }
 
     public class RouteNoteMarshaller : WireMethodMarshaller<RouteNote> {
-      override fun stream(`value`: RouteNote): InputStream =
-          RouteNote.ADAPTER.encode(value).inputStream()
+      override fun stream(`value`: RouteNote): InputStream = RouteNote.ADAPTER.encode(value).inputStream()
 
       override fun marshalledClass(): Class<RouteNote> = RouteNote::class.java
 

@@ -35,7 +35,6 @@ public object FooServiceWireGrpc {
   private val descriptorMap: Map<String, DescriptorProtos.FileDescriptorProto> =
       createDescriptorMap0()
 
-
   @Volatile
   private var getCall1Method: MethodDescriptor<Request, Response>? = null
 
@@ -50,8 +49,7 @@ public object FooServiceWireGrpc {
 
   private fun fileDescriptor(path: String, visited: Set<String>): Descriptors.FileDescriptor {
     val proto = descriptorMap[path]!!
-    val deps = proto.dependencyList.filter { !visited.contains(it) }.map { fileDescriptor(it,
-        visited + path) }
+    val deps = proto.dependencyList.filter { !visited.contains(it) }.map { fileDescriptor(it, visited + path) }
     return Descriptors.FileDescriptor.buildFrom(proto, deps.toTypedArray())
   }
 
@@ -134,18 +132,14 @@ public object FooServiceWireGrpc {
 
   public fun newStub(channel: Channel): FooServiceStub = FooServiceStub(channel)
 
-  public fun newBlockingStub(channel: Channel): FooServiceBlockingStub =
-      FooServiceBlockingStub(channel)
+  public fun newBlockingStub(channel: Channel): FooServiceBlockingStub = FooServiceBlockingStub(channel)
 
   public abstract class FooServiceImplBase : WireBindableService {
-    public open fun Call1(request: Request, response: StreamObserver<Response>): Unit = throw
-        UnsupportedOperationException()
+    public open fun Call1(request: Request, response: StreamObserver<Response>): Unit = throw UnsupportedOperationException()
 
-    public open fun Call2(request: Request, response: StreamObserver<Response>): Unit = throw
-        UnsupportedOperationException()
+    public open fun Call2(request: Request, response: StreamObserver<Response>): Unit = throw UnsupportedOperationException()
 
-    override fun bindService(): ServerServiceDefinition =
-        ServerServiceDefinition.builder(getServiceDescriptor()).addMethod(
+    override fun bindService(): ServerServiceDefinition = ServerServiceDefinition.builder(getServiceDescriptor()).addMethod(
               getCall1Method(),
               serverCallsAsyncUnaryCall(this@FooServiceImplBase::Call1)
             ).addMethod(
@@ -154,8 +148,7 @@ public object FooServiceWireGrpc {
             ).build()
 
     public class RequestMarshaller : WireMethodMarshaller<Request> {
-      override fun stream(`value`: Request): InputStream =
-          Request.ADAPTER.encode(value).inputStream()
+      override fun stream(`value`: Request): InputStream = Request.ADAPTER.encode(value).inputStream()
 
       override fun marshalledClass(): Class<Request> = Request::class.java
 
@@ -163,8 +156,7 @@ public object FooServiceWireGrpc {
     }
 
     public class ResponseMarshaller : WireMethodMarshaller<Response> {
-      override fun stream(`value`: Response): InputStream =
-          Response.ADAPTER.encode(value).inputStream()
+      override fun stream(`value`: Response): InputStream = Response.ADAPTER.encode(value).inputStream()
 
       override fun marshalledClass(): Class<Response> = Response::class.java
 
@@ -177,8 +169,7 @@ public object FooServiceWireGrpc {
 
     internal constructor(channel: Channel, callOptions: CallOptions) : super(channel, callOptions)
 
-    override fun build(channel: Channel, callOptions: CallOptions): FooServiceStub =
-        FooServiceStub(channel, callOptions)
+    override fun build(channel: Channel, callOptions: CallOptions): FooServiceStub = FooServiceStub(channel, callOptions)
 
     public fun Call1(request: Request, response: StreamObserver<Response>) {
       clientCallsAsyncUnaryCall(channel.newCall(getCall1Method(), callOptions), request, response)
@@ -194,13 +185,10 @@ public object FooServiceWireGrpc {
 
     internal constructor(channel: Channel, callOptions: CallOptions) : super(channel, callOptions)
 
-    override fun build(channel: Channel, callOptions: CallOptions): FooServiceBlockingStub =
-        FooServiceBlockingStub(channel, callOptions)
+    override fun build(channel: Channel, callOptions: CallOptions): FooServiceBlockingStub = FooServiceBlockingStub(channel, callOptions)
 
-    public fun Call1(request: Request): Response = blockingUnaryCall(channel, getCall1Method(),
-        callOptions, request)
+    public fun Call1(request: Request): Response = blockingUnaryCall(channel, getCall1Method(), callOptions, request)
 
-    public fun Call2(request: Request): Response = blockingUnaryCall(channel, getCall2Method(),
-        callOptions, request)
+    public fun Call2(request: Request): Response = blockingUnaryCall(channel, getCall2Method(), callOptions, request)
   }
 }

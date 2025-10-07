@@ -86,11 +86,9 @@ class StubTest {
 
           internal constructor(channel: Channel, callOptions: CallOptions) : super(channel, callOptions)
 
-          override fun build(channel: Channel, callOptions: CallOptions): TestServiceStub =
-              TestServiceStub(channel, callOptions)
+          override fun build(channel: Channel, callOptions: CallOptions): TestServiceStub = TestServiceStub(channel, callOptions)
 
-          public suspend fun TestRPC(request: Flow<Test>): Flow<Test> = bidiStreamingRpc(channel,
-              getTestRPCMethod(), request, callOptions)
+          public suspend fun TestRPC(request: Flow<Test>): Flow<Test> = bidiStreamingRpc(channel, getTestRPCMethod(), request, callOptions)
         }
       }
             """.trimIndent().trim(),
@@ -131,11 +129,9 @@ class StubTest {
 
           internal constructor(channel: Channel, callOptions: CallOptions) : super(channel, callOptions)
 
-          override fun build(channel: Channel, callOptions: CallOptions): TestServiceStub =
-              TestServiceStub(channel, callOptions)
+          override fun build(channel: Channel, callOptions: CallOptions): TestServiceStub = TestServiceStub(channel, callOptions)
 
-          public suspend fun TestRPC(request: Test): Flow<Test> = serverStreamingRpc(channel,
-              getTestRPCMethod(), request, callOptions)
+          public suspend fun TestRPC(request: Test): Flow<Test> = serverStreamingRpc(channel, getTestRPCMethod(), request, callOptions)
         }
       }
             """.trimIndent().trim(),
@@ -176,11 +172,9 @@ class StubTest {
 
           internal constructor(channel: Channel, callOptions: CallOptions) : super(channel, callOptions)
 
-          override fun build(channel: Channel, callOptions: CallOptions): TestServiceStub =
-              TestServiceStub(channel, callOptions)
+          override fun build(channel: Channel, callOptions: CallOptions): TestServiceStub = TestServiceStub(channel, callOptions)
 
-          public suspend fun TestRPC(request: Flow<Test>): Test = clientStreamingRpc(channel,
-              getTestRPCMethod(), request, callOptions)
+          public suspend fun TestRPC(request: Flow<Test>): Test = clientStreamingRpc(channel, getTestRPCMethod(), request, callOptions)
         }
       }
             """.trimIndent().trim(),
