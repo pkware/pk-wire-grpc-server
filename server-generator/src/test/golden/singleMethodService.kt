@@ -135,8 +135,14 @@ public object FooServiceWireGrpc {
   public fun newBlockingStub(channel: Channel): FooServiceBlockingStub = FooServiceBlockingStub(channel)
 
   public abstract class FooServiceImplBase : WireBindableService {
+    /**
+     * Defined in service.proto
+     */
     public open fun Call1(request: Request, response: StreamObserver<Response>): Unit = throw UnsupportedOperationException()
 
+    /**
+     * Defined in service.proto
+     */
     public open fun Call2(request: Request, response: StreamObserver<Response>): Unit = throw UnsupportedOperationException()
 
     override fun bindService(): ServerServiceDefinition = ServerServiceDefinition.builder(getServiceDescriptor()).addMethod(
@@ -171,10 +177,16 @@ public object FooServiceWireGrpc {
 
     override fun build(channel: Channel, callOptions: CallOptions): FooServiceStub = FooServiceStub(channel, callOptions)
 
+    /**
+     * Defined in service.proto
+     */
     public fun Call1(request: Request, response: StreamObserver<Response>) {
       clientCallsAsyncUnaryCall(channel.newCall(getCall1Method(), callOptions), request, response)
     }
 
+    /**
+     * Defined in service.proto
+     */
     public fun Call2(request: Request, response: StreamObserver<Response>) {
       clientCallsAsyncUnaryCall(channel.newCall(getCall2Method(), callOptions), request, response)
     }
@@ -187,8 +199,14 @@ public object FooServiceWireGrpc {
 
     override fun build(channel: Channel, callOptions: CallOptions): FooServiceBlockingStub = FooServiceBlockingStub(channel, callOptions)
 
+    /**
+     * Defined in service.proto
+     */
     public fun Call1(request: Request): Response = blockingUnaryCall(channel, getCall1Method(), callOptions, request)
 
+    /**
+     * Defined in service.proto
+     */
     public fun Call2(request: Request): Response = blockingUnaryCall(channel, getCall2Method(), callOptions, request)
   }
 }

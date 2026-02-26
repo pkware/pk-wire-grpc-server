@@ -16,6 +16,7 @@
 package com.squareup.wire.kotlin.grpcserver
 
 import com.squareup.kotlinpoet.ClassName
+import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.TypeName
 import com.squareup.kotlinpoet.TypeSpec
 import com.squareup.wire.kotlin.grpcserver.BlockingStubGenerator.addBlockingStub
@@ -25,6 +26,7 @@ import com.squareup.wire.kotlin.grpcserver.ServiceDescriptorGenerator.addService
 import com.squareup.wire.kotlin.grpcserver.StubGenerator.addStub
 import com.squareup.wire.schema.ProtoFile
 import com.squareup.wire.schema.ProtoType
+import com.squareup.wire.schema.Rpc
 import com.squareup.wire.schema.Schema
 import com.squareup.wire.schema.Service
 
@@ -54,4 +56,15 @@ class KotlinGrpcGenerator(
     companion object {
         data class Options(val singleMethodServices: Boolean, val suspendingCalls: Boolean)
     }
+}
+
+internal fun FunSpec.Builder.addRpcKdoc(rpc: Rpc, sourceFile: String): FunSpec.Builder {
+    val kdoc = buildString {
+        if (rpc.documentation.isNotBlank()) {
+            append(rpc.documentation)
+            append("\n\n")
+        }
+        append("Defined in $sourceFile")
+    }
+    return addKdoc("%L", kdoc)
 }

@@ -176,6 +176,7 @@ object StubGenerator {
             }
             builder.addFunction(
                 FunSpec.builder(rpc.name)
+                    .apply { addRpcKdoc(rpc, service.location.path) }
                     .apply { addImplBaseRpcSignature(generator, this, rpc, options) }
                     .addCode(codeBlock)
                     .build(),
@@ -197,6 +198,7 @@ object StubGenerator {
             )
             builder.addFunction(
                 FunSpec.builder(rpc.name)
+                    .apply { addRpcKdoc(rpc, service.location.path) }
                     .apply { addImplBaseRpcSignature(generator, this, rpc, options) }
                     .addModifiers(KModifier.SUSPEND)
                     .addCode(codeBlock)

@@ -210,12 +210,48 @@ public object RouteGuideWireGrpc {
   public fun newBlockingStub(channel: Channel): RouteGuideBlockingStub = RouteGuideBlockingStub(channel)
 
   public abstract class RouteGuideImplBase : WireBindableService {
+    /**
+     * A simple RPC.
+     *
+     * Obtains the feature at a given position.
+     *
+     * A feature with an empty name is returned if there's no feature at the given
+     * position.
+     *
+     * Defined in src/test/proto/RouteGuideProto.proto
+     */
     public open fun GetFeature(request: Point, response: StreamObserver<Feature>): Unit = throw UnsupportedOperationException()
 
+    /**
+     * A server-to-client streaming RPC.
+     *
+     * Obtains the Features available within the given Rectangle.  Results are
+     * streamed rather than returned at once (e.g. in a response message with a
+     * repeated field), as the rectangle may cover a large area and contain a
+     * huge number of features.
+     *
+     * Defined in src/test/proto/RouteGuideProto.proto
+     */
     public open fun ListFeatures(request: Rectangle, response: StreamObserver<Feature>): Unit = throw UnsupportedOperationException()
 
+    /**
+     * A client-to-server streaming RPC.
+     *
+     * Accepts a stream of Points on a route being traversed, returning a
+     * RouteSummary when traversal is completed.
+     *
+     * Defined in src/test/proto/RouteGuideProto.proto
+     */
     public open fun RecordRoute(response: StreamObserver<RouteSummary>): StreamObserver<Point> = throw UnsupportedOperationException()
 
+    /**
+     * A Bidirectional streaming RPC.
+     *
+     * Accepts a stream of RouteNotes sent while a route is being traversed,
+     * while receiving other RouteNotes (e.g. from other users).
+     *
+     * Defined in src/test/proto/RouteGuideProto.proto
+     */
     public open fun RouteChat(response: StreamObserver<RouteNote>): StreamObserver<RouteNote> = throw UnsupportedOperationException()
 
     override fun bindService(): ServerServiceDefinition = ServerServiceDefinition.builder(getServiceDescriptor()).addMethod(
@@ -280,16 +316,52 @@ public object RouteGuideWireGrpc {
 
     override fun build(channel: Channel, callOptions: CallOptions): RouteGuideStub = RouteGuideStub(channel, callOptions)
 
+    /**
+     * A simple RPC.
+     *
+     * Obtains the feature at a given position.
+     *
+     * A feature with an empty name is returned if there's no feature at the given
+     * position.
+     *
+     * Defined in src/test/proto/RouteGuideProto.proto
+     */
     public fun GetFeature(request: Point, response: StreamObserver<Feature>) {
       clientCallsAsyncUnaryCall(channel.newCall(getGetFeatureMethod(), callOptions), request, response)
     }
 
+    /**
+     * A server-to-client streaming RPC.
+     *
+     * Obtains the Features available within the given Rectangle.  Results are
+     * streamed rather than returned at once (e.g. in a response message with a
+     * repeated field), as the rectangle may cover a large area and contain a
+     * huge number of features.
+     *
+     * Defined in src/test/proto/RouteGuideProto.proto
+     */
     public fun ListFeatures(request: Rectangle, response: StreamObserver<Feature>) {
       clientCallsAsyncServerStreamingCall(channel.newCall(getListFeaturesMethod(), callOptions), request, response)
     }
 
+    /**
+     * A client-to-server streaming RPC.
+     *
+     * Accepts a stream of Points on a route being traversed, returning a
+     * RouteSummary when traversal is completed.
+     *
+     * Defined in src/test/proto/RouteGuideProto.proto
+     */
     public fun RecordRoute(response: StreamObserver<RouteSummary>): StreamObserver<Point> = clientCallsAsyncClientStreamingCall(channel.newCall(getRecordRouteMethod(), callOptions), response)
 
+    /**
+     * A Bidirectional streaming RPC.
+     *
+     * Accepts a stream of RouteNotes sent while a route is being traversed,
+     * while receiving other RouteNotes (e.g. from other users).
+     *
+     * Defined in src/test/proto/RouteGuideProto.proto
+     */
     public fun RouteChat(response: StreamObserver<RouteNote>): StreamObserver<RouteNote> = clientCallsAsyncBidiStreamingCall(channel.newCall(getRouteChatMethod(), callOptions), response)
   }
 
@@ -300,14 +372,60 @@ public object RouteGuideWireGrpc {
 
     override fun build(channel: Channel, callOptions: CallOptions): RouteGuideBlockingStub = RouteGuideBlockingStub(channel, callOptions)
 
+    /**
+     * A simple RPC.
+     *
+     * Obtains the feature at a given position.
+     *
+     * A feature with an empty name is returned if there's no feature at the given
+     * position.
+     *
+     * Defined in src/test/proto/RouteGuideProto.proto
+     */
     public fun GetFeature(request: Point): Feature = blockingUnaryCall(channel, getGetFeatureMethod(), callOptions, request)
 
+    /**
+     * A server-to-client streaming RPC.
+     *
+     * Obtains the Features available within the given Rectangle.  Results are
+     * streamed rather than returned at once (e.g. in a response message with a
+     * repeated field), as the rectangle may cover a large area and contain a
+     * huge number of features.
+     *
+     * Defined in src/test/proto/RouteGuideProto.proto
+     */
     public fun ListFeatures(request: Rectangle): Iterator<Feature> = blockingServerStreamingCall(channel, getListFeaturesMethod(), callOptions, request)
 
+    /**
+     * A server-to-client streaming RPC.
+     *
+     * Obtains the Features available within the given Rectangle.  Results are
+     * streamed rather than returned at once (e.g. in a response message with a
+     * repeated field), as the rectangle may cover a large area and contain a
+     * huge number of features.
+     *
+     * Defined in src/test/proto/RouteGuideProto.proto
+     */
     public fun ListFeaturesCall(request: Rectangle): BlockingClientCall<Rectangle, Feature> = blockingV2ServerStreamingCall(channel, getListFeaturesMethod(), callOptions, request)
 
+    /**
+     * A client-to-server streaming RPC.
+     *
+     * Accepts a stream of Points on a route being traversed, returning a
+     * RouteSummary when traversal is completed.
+     *
+     * Defined in src/test/proto/RouteGuideProto.proto
+     */
     public fun RecordRoute(): BlockingClientCall<Point, RouteSummary> = blockingClientStreamingCall(channel, getRecordRouteMethod(), callOptions)
 
+    /**
+     * A Bidirectional streaming RPC.
+     *
+     * Accepts a stream of RouteNotes sent while a route is being traversed,
+     * while receiving other RouteNotes (e.g. from other users).
+     *
+     * Defined in src/test/proto/RouteGuideProto.proto
+     */
     public fun RouteChat(): BlockingClientCall<RouteNote, RouteNote> = blockingBidiStreamingCall(channel, getRouteChatMethod(), callOptions)
   }
 }

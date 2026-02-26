@@ -44,7 +44,7 @@ object ImplBaseGenerator {
         .addType(
             TypeSpec.classBuilder("${service.name}ImplBase")
                 .addModifiers(KModifier.ABSTRACT)
-                .addSuperinterface(ClassName("com.squareup.wire.kotlin.grpcserver","WireBindableService"))
+                .addSuperinterface(ClassName("com.squareup.wire.kotlin.grpcserver", "WireBindableService"))
                 .apply { addImplBaseConstructor(options) }
                 .apply { addImplBaseBody(generator, this, service, options) }
                 .build(),
@@ -125,6 +125,7 @@ object ImplBaseGenerator {
             builder.addFunction(
                 FunSpec.builder(rpc.name)
                     .addModifiers(KModifier.OPEN)
+                    .apply { addRpcKdoc(rpc, service.location.path) }
                     .apply { addImplBaseRpcSignature(generator, this, rpc, options) }
                     .apply { if (options.suspendingCalls && !rpc.responseStreaming) { addModifiers(KModifier.SUSPEND) } }
                     .addCode(CodeBlock.of("throw %T()", UnsupportedOperationException::class.java))
@@ -147,7 +148,7 @@ object ImplBaseGenerator {
                 val className = generator.classNameFor(it!!)
                 builder.addType(
                     TypeSpec.classBuilder("${it.simpleName}Marshaller")
-                        .addSuperinterface(ClassName("com.squareup.wire.kotlin.grpcserver","WireMethodMarshaller").parameterizedBy(className))
+                        .addSuperinterface(ClassName("com.squareup.wire.kotlin.grpcserver", "WireMethodMarshaller").parameterizedBy(className))
                         .addFunction(
                             FunSpec.builder("stream")
                                 .addModifiers(KModifier.OVERRIDE)

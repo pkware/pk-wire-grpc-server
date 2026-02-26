@@ -72,13 +72,14 @@ object BlockingStubGenerator {
     }
 
     private fun TypeSpec.Builder.addBlockingStubRpcCalls(generator: ClassNameGenerator, service: Service): TypeSpec.Builder {
+        val sourceFile = service.location.path
         service.rpcs
             .forEach { rpc ->
                 val functions = when {
-                    !rpc.requestStreaming && !rpc.responseStreaming -> unary(generator, rpc)
-                    rpc.requestStreaming && !rpc.responseStreaming -> clientStreaming(generator, rpc)
-                    !rpc.requestStreaming -> serverStreaming(generator, rpc)
-                    else -> bidi(generator, rpc)
+                    !rpc.requestStreaming && !rpc.responseStreaming -> unary(generator, rpc, sourceFile)
+                    rpc.requestStreaming && !rpc.responseStreaming -> clientStreaming(generator, rpc, sourceFile)
+                    !rpc.requestStreaming -> serverStreaming(generator, rpc, sourceFile)
+                    else -> bidi(generator, rpc, sourceFile)
                 }
 
                 functions.forEach(::addFunction)
@@ -86,7 +87,12 @@ object BlockingStubGenerator {
         return this
     }
 
-    private fun unary(generator: ClassNameGenerator, rpc: Rpc): List<FunSpec> {
+    /**
+     * Generates a blocking unary RPC method.
+     *
+     * @param sourceFile the proto file path, included in generated KDoc.
+     */
+    private fun unary(generator: ClassNameGenerator, rpc: Rpc, sourceFile: String): List<FunSpec> {
         val blockingUnaryCall = MemberName(enclosingClassName = clientCalls, simpleName = "blockingUnaryCall")
         val codeBlock = CodeBlock.of(
             "return %M(channel, get${rpc.name}Method(), callOptions, request)",
@@ -94,6 +100,7 @@ object BlockingStubGenerator {
         )
         return listOf(
             FunSpec.builder(rpc.name)
+                .apply { addRpcKdoc(rpc, sourceFile) }
                 .addParameter("request", ClassName.bestGuess(generator.classNameFor(rpc.requestType!!).toString()))
                 .returns(generator.classNameFor(rpc.responseType!!))
                 .addCode(codeBlock)
@@ -101,13 +108,19 @@ object BlockingStubGenerator {
         )
     }
 
-    private fun serverStreaming(generator: ClassNameGenerator, rpc: Rpc): List<FunSpec> {
+    /**
+     * Generates blocking server-streaming RPC methods.
+     *
+     * @param sourceFile the proto file path, included in generated KDoc.
+     */
+    private fun serverStreaming(generator: ClassNameGenerator, rpc: Rpc, sourceFile: String): List<FunSpec> {
         val blockingServerStreamingCall = MemberName(enclosingClassName = clientCalls, simpleName = "blockingServerStreamingCall")
         val codeBlock1 = CodeBlock.of(
             "return %M(channel, get${rpc.name}Method(), callOptions, request)",
             blockingServerStreamingCall,
         )
         val v1 = FunSpec.builder(rpc.name)
+            .apply { addRpcKdoc(rpc, sourceFile) }
             .addParameter("request", ClassName.bestGuess(generator.classNameFor(rpc.requestType!!).toString()))
             .returns(Iterator::class.asClassName().parameterizedBy(generator.classNameFor(rpc.responseType!!)))
             .addCode(codeBlock1)
@@ -122,6 +135,7 @@ object BlockingStubGenerator {
         // We have to give this method a different name to avoid conflicts.
         // Since this method returns a BlockingClientCall, suffix it with "Call".
         val v2 = FunSpec.builder("${rpc.name}Call")
+            .apply { addRpcKdoc(rpc, sourceFile) }
             .addParameter("request", ClassName.bestGuess(generator.classNameFor(rpc.requestType!!).toString()))
             .returns(
                 blockingClientCall.parameterizedBy(
@@ -135,7 +149,12 @@ object BlockingStubGenerator {
         return listOf(v1, v2)
     }
 
-    private fun clientStreaming(generator: ClassNameGenerator, rpc: Rpc): List<FunSpec> {
+    /**
+     * Generates a blocking client-streaming RPC method.
+     *
+     * @param sourceFile the proto file path, included in generated KDoc.
+     */
+    private fun clientStreaming(generator: ClassNameGenerator, rpc: Rpc, sourceFile: String): List<FunSpec> {
         val blockingClientStreamingCall = MemberName(enclosingClassName = clientCalls, simpleName = "blockingClientStreamingCall")
         val codeBlock = CodeBlock.of(
             "return %M(channel, get${rpc.name}Method(), callOptions)",
@@ -144,6 +163,7 @@ object BlockingStubGenerator {
 
         return listOf(
             FunSpec.builder(rpc.name)
+                .apply { addRpcKdoc(rpc, sourceFile) }
                 .returns(
                     blockingClientCall.parameterizedBy(
                         ClassName.bestGuess(generator.classNameFor(rpc.requestType!!).toString()),
@@ -155,7 +175,12 @@ object BlockingStubGenerator {
         )
     }
 
-    private fun bidi(generator: ClassNameGenerator, rpc: Rpc): List<FunSpec> {
+    /**
+     * Generates a blocking bidirectional-streaming RPC method.
+     *
+     * @param sourceFile the proto file path, included in generated KDoc.
+     */
+    private fun bidi(generator: ClassNameGenerator, rpc: Rpc, sourceFile: String): List<FunSpec> {
         val blockingBidiStreamingCall = MemberName(enclosingClassName = clientCalls, simpleName = "blockingBidiStreamingCall")
         val codeBlock = CodeBlock.of(
             "return %M(channel, get${rpc.name}Method(), callOptions)",
@@ -164,6 +189,7 @@ object BlockingStubGenerator {
 
         return listOf(
             FunSpec.builder(rpc.name)
+                .apply { addRpcKdoc(rpc, sourceFile) }
                 .returns(
                     blockingClientCall.parameterizedBy(
                         ClassName.bestGuess(generator.classNameFor(rpc.requestType!!).toString()),
