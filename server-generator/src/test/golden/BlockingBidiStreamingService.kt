@@ -26,6 +26,9 @@ import kotlin.jvm.Volatile
 import io.grpc.stub.ClientCalls.asyncBidiStreamingCall as clientCallsAsyncBidiStreamingCall
 import io.grpc.stub.ServerCalls.asyncBidiStreamingCall as serverCallsAsyncBidiStreamingCall
 
+/**
+ * Defined in service.proto
+ */
 public object TestServiceWireGrpc {
   public const val SERVICE_NAME: String = "test.TestService"
 
@@ -106,6 +109,9 @@ public object TestServiceWireGrpc {
 
   public fun newBlockingStub(channel: Channel): TestServiceBlockingStub = TestServiceBlockingStub(channel)
 
+  /**
+   * Defined in service.proto
+   */
   public abstract class TestServiceImplBase : WireBindableService {
     /**
      * Defined in service.proto
@@ -126,6 +132,9 @@ public object TestServiceWireGrpc {
     }
   }
 
+  /**
+   * Defined in service.proto
+   */
   public class TestServiceStub : AbstractStub<TestServiceStub> {
     internal constructor(channel: Channel) : super(channel)
 
@@ -139,6 +148,9 @@ public object TestServiceWireGrpc {
     public fun TestRPC(response: StreamObserver<Test>): StreamObserver<Test> = clientCallsAsyncBidiStreamingCall(channel.newCall(getTestRPCMethod(), callOptions), response)
   }
 
+  /**
+   * Defined in service.proto
+   */
   public class TestServiceBlockingStub : AbstractStub<TestServiceBlockingStub> {
     internal constructor(channel: Channel) : super(channel)
 

@@ -26,6 +26,9 @@ import kotlin.jvm.Volatile
 import io.grpc.stub.ClientCalls.asyncUnaryCall as clientCallsAsyncUnaryCall
 import io.grpc.stub.ServerCalls.asyncUnaryCall as serverCallsAsyncUnaryCall
 
+/**
+ * Defined in service.proto
+ */
 public object FooServiceWireGrpc {
   public const val SERVICE_NAME: String = "foo.FooService"
 
@@ -134,6 +137,9 @@ public object FooServiceWireGrpc {
 
   public fun newBlockingStub(channel: Channel): FooServiceBlockingStub = FooServiceBlockingStub(channel)
 
+  /**
+   * Defined in service.proto
+   */
   public abstract class FooServiceImplBase : WireBindableService {
     /**
      * Defined in service.proto
@@ -170,6 +176,9 @@ public object FooServiceWireGrpc {
     }
   }
 
+  /**
+   * Defined in service.proto
+   */
   public class FooServiceStub : AbstractStub<FooServiceStub> {
     internal constructor(channel: Channel) : super(channel)
 
@@ -192,6 +201,9 @@ public object FooServiceWireGrpc {
     }
   }
 
+  /**
+   * Defined in service.proto
+   */
   public class FooServiceBlockingStub : AbstractStub<FooServiceBlockingStub> {
     internal constructor(channel: Channel) : super(channel)
 

@@ -54,6 +54,7 @@ object BlockingStubGenerator {
                 )
                 .addType(
                     TypeSpec.classBuilder(stubClassName)
+                        .addServiceKdoc(service)
                         .apply {
                             addAbstractStubConstructor(
                                 generator,

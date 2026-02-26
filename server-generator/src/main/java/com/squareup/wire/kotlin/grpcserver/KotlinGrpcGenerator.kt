@@ -43,6 +43,7 @@ class KotlinGrpcGenerator(
         val classNameGenerator = ClassNameGenerator(typeToKotlinName)
         val grpcClassName = classNameGenerator.classNameFor(service.type, "WireGrpc")
         val builder = TypeSpec.objectBuilder(grpcClassName)
+            .addServiceKdoc(service)
 
         addServiceDescriptor(builder, service, protoFile, schema)
         service.rpcs.forEach { rpc -> addMethodDescriptor(classNameGenerator, builder, service, rpc) }
@@ -56,6 +57,17 @@ class KotlinGrpcGenerator(
     companion object {
         data class Options(val singleMethodServices: Boolean, val suspendingCalls: Boolean)
     }
+}
+
+internal fun TypeSpec.Builder.addServiceKdoc(service: Service): TypeSpec.Builder {
+    val kdoc = buildString {
+        if (service.documentation.isNotBlank()) {
+            append(service.documentation)
+            append("\n\n")
+        }
+        append("Defined in ${service.location.path}")
+    }
+    return addKdoc("%L", kdoc)
 }
 
 internal fun FunSpec.Builder.addRpcKdoc(rpc: Rpc, sourceFile: String): FunSpec.Builder {

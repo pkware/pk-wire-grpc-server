@@ -15,6 +15,11 @@ import java.lang.UnsupportedOperationException
 import kotlin.Unit
 
 public class RouteGuideWireGrpc {
+  /**
+   * Interface exported by the server.
+   *
+   * Defined in src/test/proto/RouteGuideProto.proto
+   */
   public abstract class RouteGuideImplBase : WireBindableService {
     /**
      * A simple RPC.

@@ -81,6 +81,9 @@ class StubTest {
       public class TestServiceWireGrpc {
         public fun newStub(channel: Channel): TestServiceStub = TestServiceStub(channel)
 
+        /**
+         * Defined in test.proto
+         */
         public class TestServiceStub : AbstractCoroutineStub<TestServiceStub> {
           internal constructor(channel: Channel) : super(channel)
 
@@ -127,6 +130,9 @@ class StubTest {
       public class TestServiceWireGrpc {
         public fun newStub(channel: Channel): TestServiceStub = TestServiceStub(channel)
 
+        /**
+         * Defined in test.proto
+         */
         public class TestServiceStub : AbstractCoroutineStub<TestServiceStub> {
           internal constructor(channel: Channel) : super(channel)
 
@@ -173,6 +179,9 @@ class StubTest {
       public class TestServiceWireGrpc {
         public fun newStub(channel: Channel): TestServiceStub = TestServiceStub(channel)
 
+        /**
+         * Defined in test.proto
+         */
         public class TestServiceStub : AbstractCoroutineStub<TestServiceStub> {
           internal constructor(channel: Channel) : super(channel)
 

@@ -44,6 +44,7 @@ object ImplBaseGenerator {
         .addType(
             TypeSpec.classBuilder("${service.name}ImplBase")
                 .addModifiers(KModifier.ABSTRACT)
+                .addServiceKdoc(service)
                 .addSuperinterface(ClassName("com.squareup.wire.kotlin.grpcserver", "WireBindableService"))
                 .apply { addImplBaseConstructor(options) }
                 .apply { addImplBaseBody(generator, this, service, options) }
