@@ -13,6 +13,11 @@ import io.grpc.stub.StreamObserver
 public class RouteGuideWireGrpc {
   public fun newStub(channel: Channel): RouteGuideStub = RouteGuideStub(channel)
 
+  /**
+   * Interface exported by the server.
+   *
+   * Defined in src/test/proto/RouteGuideProto.proto
+   */
   public class RouteGuideStub : AbstractStub<RouteGuideStub> {
     internal constructor(channel: Channel) : super(channel)
 

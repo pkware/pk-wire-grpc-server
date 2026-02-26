@@ -22,6 +22,9 @@ import kotlin.collections.Set
 import kotlin.coroutines.CoroutineContext
 import kotlin.jvm.Volatile
 
+/**
+ * Defined in service.proto
+ */
 public object MyServiceWireGrpc {
   public const val SERVICE_NAME: String = "MyService"
 
@@ -105,6 +108,9 @@ public object MyServiceWireGrpc {
 
   public fun newStub(channel: Channel): MyServiceStub = MyServiceStub(channel)
 
+  /**
+   * Defined in service.proto
+   */
   public abstract class MyServiceImplBase(
     protected val context: CoroutineContext = kotlin.coroutines.EmptyCoroutineContext
     ,
@@ -131,6 +137,9 @@ public object MyServiceWireGrpc {
     }
   }
 
+  /**
+   * Defined in service.proto
+   */
   public class MyServiceStub : AbstractCoroutineStub<MyServiceStub> {
     internal constructor(channel: Channel) : super(channel)
 

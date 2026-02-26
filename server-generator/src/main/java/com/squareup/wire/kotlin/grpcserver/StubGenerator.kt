@@ -62,6 +62,7 @@ object StubGenerator {
             )
             .addType(
                 TypeSpec.classBuilder(stubClassName)
+                    .addServiceKdoc(service)
                     .apply {
                         addAbstractStubConstructor(
                             generator,
@@ -98,6 +99,7 @@ object StubGenerator {
             )
             .addType(
                 TypeSpec.classBuilder(stubClassName)
+                    .addServiceKdoc(service)
                     .apply {
                         addAbstractStubConstructor(
                             generator,

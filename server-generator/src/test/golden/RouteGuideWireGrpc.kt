@@ -38,6 +38,11 @@ import io.grpc.stub.ServerCalls.asyncClientStreamingCall as serverCallsAsyncClie
 import io.grpc.stub.ServerCalls.asyncServerStreamingCall as serverCallsAsyncServerStreamingCall
 import io.grpc.stub.ServerCalls.asyncUnaryCall as serverCallsAsyncUnaryCall
 
+/**
+ * Interface exported by the server.
+ *
+ * Defined in src/test/proto/RouteGuideProto.proto
+ */
 public object RouteGuideWireGrpc {
   public const val SERVICE_NAME: String = "routeguide.RouteGuide"
 
@@ -209,6 +214,11 @@ public object RouteGuideWireGrpc {
 
   public fun newBlockingStub(channel: Channel): RouteGuideBlockingStub = RouteGuideBlockingStub(channel)
 
+  /**
+   * Interface exported by the server.
+   *
+   * Defined in src/test/proto/RouteGuideProto.proto
+   */
   public abstract class RouteGuideImplBase : WireBindableService {
     /**
      * A simple RPC.
@@ -309,6 +319,11 @@ public object RouteGuideWireGrpc {
     }
   }
 
+  /**
+   * Interface exported by the server.
+   *
+   * Defined in src/test/proto/RouteGuideProto.proto
+   */
   public class RouteGuideStub : AbstractStub<RouteGuideStub> {
     internal constructor(channel: Channel) : super(channel)
 
@@ -365,6 +380,11 @@ public object RouteGuideWireGrpc {
     public fun RouteChat(response: StreamObserver<RouteNote>): StreamObserver<RouteNote> = clientCallsAsyncBidiStreamingCall(channel.newCall(getRouteChatMethod(), callOptions), response)
   }
 
+  /**
+   * Interface exported by the server.
+   *
+   * Defined in src/test/proto/RouteGuideProto.proto
+   */
   public class RouteGuideBlockingStub : AbstractStub<RouteGuideBlockingStub> {
     internal constructor(channel: Channel) : super(channel)
 
