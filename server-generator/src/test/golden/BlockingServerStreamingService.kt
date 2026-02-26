@@ -110,6 +110,9 @@ public object TestServiceWireGrpc {
   public fun newBlockingStub(channel: Channel): TestServiceBlockingStub = TestServiceBlockingStub(channel)
 
   public abstract class TestServiceImplBase : WireBindableService {
+    /**
+     * Defined in service.proto
+     */
     public open fun TestRPC(request: Test, response: StreamObserver<Test>): Unit = throw UnsupportedOperationException()
 
     override fun bindService(): ServerServiceDefinition = ServerServiceDefinition.builder(getServiceDescriptor()).addMethod(
@@ -133,6 +136,9 @@ public object TestServiceWireGrpc {
 
     override fun build(channel: Channel, callOptions: CallOptions): TestServiceStub = TestServiceStub(channel, callOptions)
 
+    /**
+     * Defined in service.proto
+     */
     public fun TestRPC(request: Test, response: StreamObserver<Test>) {
       clientCallsAsyncServerStreamingCall(channel.newCall(getTestRPCMethod(), callOptions), request, response)
     }
@@ -145,8 +151,14 @@ public object TestServiceWireGrpc {
 
     override fun build(channel: Channel, callOptions: CallOptions): TestServiceBlockingStub = TestServiceBlockingStub(channel, callOptions)
 
+    /**
+     * Defined in service.proto
+     */
     public fun TestRPC(request: Test): Iterator<Test> = blockingServerStreamingCall(channel, getTestRPCMethod(), callOptions, request)
 
+    /**
+     * Defined in service.proto
+     */
     public fun TestRPCCall(request: Test): BlockingClientCall<Test, Test> = blockingV2ServerStreamingCall(channel, getTestRPCMethod(), callOptions, request)
   }
 }

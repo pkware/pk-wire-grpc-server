@@ -109,6 +109,9 @@ public object MyServiceWireGrpc {
     protected val context: CoroutineContext = kotlin.coroutines.EmptyCoroutineContext
     ,
   ) : WireBindableService {
+    /**
+     * Defined in service.proto
+     */
     public open suspend fun doSomething(request: Unit): Unit = throw UnsupportedOperationException()
 
     override fun bindService(): ServerServiceDefinition = ServerServiceDefinition.builder(getServiceDescriptor()).addMethod(
@@ -135,6 +138,9 @@ public object MyServiceWireGrpc {
 
     override fun build(channel: Channel, callOptions: CallOptions): MyServiceStub = MyServiceStub(channel, callOptions)
 
+    /**
+     * Defined in service.proto
+     */
     public suspend fun doSomething(request: Unit): Unit = unaryRpc(channel, getdoSomethingMethod(), request, callOptions)
   }
 }
