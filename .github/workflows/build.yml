@@ -21,8 +21,7 @@ jobs:
       matrix:
         java-version:
           - 17
-          - 18
-          - 19
+          - 25
 
     steps:
       - name: Checkout
@@ -53,23 +52,16 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
-          java-version: 19
-
-      - name: Install Chrome
-        uses: browser-actions/setup-chrome@latest
+          java-version: 25
 
       - name: Test
-        uses: nick-fields/retry@v2.9.0
-        with:
-          max_attempts: 5
-          timeout_minutes: 90
-          shell: bash
-          command: |
-            ./gradlew build --stacktrace --warning-mode all
+        run: |
+          ./gradlew build --stacktrace --warning-mode all
+        shell: bash
 
   publish-snapshot:
-    runs-on: macos-latest
-    if: github.repository == 'square/wire-grpc-server' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    if: github.repository == 'pkware/pk-wire-grpc-server' && github.ref == 'refs/heads/main'
     needs: [jvm]
 
     steps:
@@ -80,12 +72,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
-          java-version: 19
-
-      - name: Setup Xcode
-        uses: maxim-lobanov/setup-xcode@v1
-        with:
-          xcode-version: latest-stable
+          java-version: 25
 
       - name: Upload Artifacts
         run: |
