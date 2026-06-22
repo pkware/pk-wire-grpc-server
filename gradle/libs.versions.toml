@@ -89,7 +89,7 @@ protobuf-java = { module = "com.google.protobuf:protobuf-java", version.ref = "p
 protobuf-javaUtil = { module = "com.google.protobuf:protobuf-java-util", version.ref = "protobuf" }
 protobuf-protoc = { module = "com.google.protobuf:protoc", version.ref = "protobuf" }
 truth = { module = "com.google.truth:truth", version = "1.2.0" }
-vanniktechPublishPlugin = { module = "com.vanniktech:gradle-maven-publish-plugin", version = "0.26.0" }
+vanniktechPublishPlugin = { module = "com.vanniktech:gradle-maven-publish-plugin", version = "0.30.0" }
 
 wire-bom = { module = "com.squareup.wire:wire-bom", version.ref = "wire" }
 wire-compiler = { module = "com.squareup.wire:wire-compiler", version.ref = "wire" }

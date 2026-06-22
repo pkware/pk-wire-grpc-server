@@ -297,7 +297,7 @@ private class WireGrpcServerBuildExtensionImpl(private val project: Project) : W
 
         val mavenPublishing = project.extensions.getByName("mavenPublishing") as MavenPublishBaseExtension
         mavenPublishing.apply {
-            publishToMavenCentral(SonatypeHost.S01, automaticRelease = true)
+            publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL, automaticRelease = true)
             val inMemoryKey = project.findProperty("signingInMemoryKey") as String?
             if (!inMemoryKey.isNullOrEmpty()) {
                 signAllPublications()
