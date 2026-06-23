@@ -45,7 +45,7 @@ pluginz-spotless = { module = "com.diffplug.spotless:spotless-plugin-gradle", ve
 pluginz-buildConfig = { module = "com.github.gmazzo:gradle-buildconfig-plugin", version = "3.1.0" }
 protobuf-gradlePlugin = { module = "com.google.protobuf:protobuf-gradle-plugin", version.ref = "protobufGradlePlugin" }
 protobuf-java = { module = "com.google.protobuf:protobuf-java", version.ref = "protobuf" }
-truth = { module = "com.google.truth:truth", version = "1.2.0" }
+truth = { module = "com.google.truth:truth", version = "1.4.5" }
 vanniktechPublishPlugin = { module = "com.vanniktech:gradle-maven-publish-plugin", version = "0.30.0" }
 
 wire-gradlePlugin = { module = "com.squareup.wire:wire-gradle-plugin", version.ref = "wire" }
