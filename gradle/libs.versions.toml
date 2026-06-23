@@ -28,7 +28,7 @@ guava = { module = "com.google.guava:guava", version.ref = "guava" }
 kotlin-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
 kotlin-gradleApi = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin-api", version.ref = "kotlin" }
 kotlin-jsr223 = { module = "org.jetbrains.kotlin:kotlin-scripting-jsr223", version.ref = "kotlin" }
-kotlin-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version = "1.6.2" }
+kotlin-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version = "1.11.0" }
 kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit" }
 kotlinpoet = { module = "com.squareup:kotlinpoet", version.ref = "kotlinpoet" }
 okio-core = { module = "com.squareup.okio:okio", version.ref = "okio" }
