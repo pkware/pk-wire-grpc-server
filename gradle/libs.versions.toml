@@ -1,7 +1,7 @@
 [versions]
 asm = "9.6"
 assertj = "3.27.7"
-checkerQual = "3.42.0"
+checkerQual = "3.55.1"
 coroutines = "1.7.3"
 dokka = "1.9.10"
 grpc = "1.70.0"
