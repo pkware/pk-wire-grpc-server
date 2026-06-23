@@ -35,7 +35,6 @@ repositories {
 
 dependencies {
   compileOnly(libs.kotlin.gradleApi)
-  implementation(libs.pluginz.android)
   implementation(libs.pluginz.binaryCompatibilityValidator)
   implementation(libs.pluginz.kotlin)
   implementation(libs.vanniktechPublishPlugin)

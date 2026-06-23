@@ -4,7 +4,6 @@ import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootPlugin
 buildscript {
   dependencies {
     classpath(libs.pluginz.dokka)
-    classpath(libs.pluginz.android)
     classpath(libs.pluginz.binaryCompatibilityValidator)
     classpath(libs.pluginz.kotlin)
     classpath(libs.pluginz.kotlinSerialization)

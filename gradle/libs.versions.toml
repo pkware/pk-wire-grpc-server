@@ -1,5 +1,4 @@
 [versions]
-android = "4.1.1.4"
 asm = "9.6"
 assertj = "3.24.2"
 checkerQual = "3.42.0"
@@ -24,13 +23,6 @@ protobufGradlePlugin = "0.9.4"
 wire = "5.4.0"
 
 [libraries]
-android = { module = "com.google.android:android", version.ref = "android" }
-androidMaterial = {module = "com.google.android.material:material", version = "1.10.0" }
-androidx-annotations = { module = "androidx.annotation:annotation", version = "1.7.1" }
-androidx-appcompat = { module = "androidx.appcompat:appcompat", version = "1.6.1" }
-androidx-compose = { module = "androidx.activity:activity-compose", version = "1.8.2" }
-androidx-constraintLayout = { module = "androidx.constraintlayout:constraintlayout", version = "2.1.4" }
-androidx-ktx = { module = "androidx.core:core-ktx", version = "1.12.0" }
 asm = { module = "org.ow2.asm:asm", version.ref = "asm" }
 assertj = { module = "org.assertj:assertj-core", version.ref = "assertj" }
 assertk = "com.willowtreeapps.assertk:assertk:0.27.0"
@@ -51,7 +43,6 @@ jmh-generator = { module = "org.openjdk.jmh:jmh-generator-annprocess", version.r
 jsr305 = { module = "com.google.code.findbugs:jsr305", version.ref = "jsr305" }
 junit = { module = "junit:junit", version.ref = "junit" }
 kaml = { module = "com.charleskorn.kaml:kaml", version = "0.56.0" }
-kotlin-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
 kotlin-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
 kotlin-gradleApi = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin-api", version.ref = "kotlin" }
 kotlin-jsr223 = { module = "org.jetbrains.kotlin:kotlin-scripting-jsr223", version.ref = "kotlin" }
@@ -76,7 +67,6 @@ okio-fakefilesystem = { module = "com.squareup.okio:okio-fakefilesystem", versio
 # `plugins` is a keyword in version catalogs.
 # Check https://docs.gradle.org/current/userguide/platforms.html#sec:version-catalog-plugin
 #  if we ever wanna migrate to this.
-pluginz-android = { module = "com.android.tools.build:gradle", version = "8.2.0" }
 pluginz-binaryCompatibilityValidator = { module = "org.jetbrains.kotlinx.binary-compatibility-validator:org.jetbrains.kotlinx.binary-compatibility-validator.gradle.plugin", version = "0.18.1" }
 pluginz-dokka = { module = "org.jetbrains.dokka:dokka-gradle-plugin", version.ref = "dokka" }
 pluginz-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
