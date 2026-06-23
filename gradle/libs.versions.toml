@@ -46,7 +46,7 @@ pluginz-buildConfig = { module = "com.github.gmazzo:gradle-buildconfig-plugin", 
 protobuf-gradlePlugin = { module = "com.google.protobuf:protobuf-gradle-plugin", version.ref = "protobufGradlePlugin" }
 protobuf-java = { module = "com.google.protobuf:protobuf-java", version.ref = "protobuf" }
 truth = { module = "com.google.truth:truth", version = "1.2.0" }
-vanniktechPublishPlugin = { module = "com.vanniktech:gradle-maven-publish-plugin", version = "0.30.0" }
+vanniktechPublishPlugin = { module = "com.vanniktech:gradle-maven-publish-plugin", version = "0.37.0" }
 
 wire-gradlePlugin = { module = "com.squareup.wire:wire-gradle-plugin", version.ref = "wire" }
 wire-grpcClient = { module = "com.squareup.wire:wire-grpc-client", version.ref = "wire" }
