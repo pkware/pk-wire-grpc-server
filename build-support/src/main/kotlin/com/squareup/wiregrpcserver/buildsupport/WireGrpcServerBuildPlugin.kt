@@ -19,7 +19,6 @@ import com.android.build.gradle.BaseExtension
 import com.diffplug.gradle.spotless.SpotlessExtension
 import com.diffplug.spotless.LineEnding
 import com.vanniktech.maven.publish.MavenPublishBaseExtension
-import com.vanniktech.maven.publish.SonatypeHost
 import kotlinx.validation.ApiValidationExtension
 import org.gradle.accessors.dm.LibrariesForLibs
 import org.gradle.api.JavaVersion
@@ -36,7 +35,10 @@ import org.gradle.api.tasks.testing.logging.TestLogEvent.PASSED
 import org.gradle.api.tasks.testing.logging.TestLogEvent.SKIPPED
 import org.gradle.kotlin.dsl.attributes
 import org.gradle.kotlin.dsl.get
+import org.gradle.kotlin.dsl.getByType
 import org.gradle.kotlin.dsl.withType
+import org.gradle.plugins.signing.SigningExtension
+import org.gradle.plugins.signing.SigningPlugin
 import org.jetbrains.dokka.gradle.DokkaTask
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
@@ -292,17 +294,37 @@ private class WireGrpcServerBuildExtensionImpl(private val project: Project) : W
                         }
                     }
                 }
+
+                maven {
+                    name = "mavenCentral"
+                    url = if (wireVersion.endsWith("-SNAPSHOT")) {
+                        java.net.URI("https://central.sonatype.com/repository/maven-snapshots/")
+                    } else {
+                        java.net.URI("https://ossrh-staging-api.central.sonatype.com/service/local/staging/deploy/maven2")
+                    }
+                    credentials {
+                        username = project.findProperty("NEXUS_USERNAME") as String? ?: ""
+                        password = project.findProperty("NEXUS_PASSWORD") as String? ?: ""
+                    }
+                }
+            }
+        }
+
+        val isCiServer = System.getenv().containsKey("CI")
+        if (isCiServer) {
+            project.pluginManager.apply(SigningPlugin::class.java)
+            project.extensions.getByType<SigningExtension>().apply {
+                useInMemoryPgpKeys(
+                    project.findProperty("SIGNING_KEY_ID") as String? ?: "",
+                    project.findProperty("SIGNING_KEY") as String? ?: "",
+                    project.findProperty("SIGNING_PASSWORD") as String? ?: "",
+                )
+                sign(project.extensions.getByType<PublishingExtension>().publications)
             }
         }
 
         val mavenPublishing = project.extensions.getByName("mavenPublishing") as MavenPublishBaseExtension
         mavenPublishing.apply {
-            publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL, automaticRelease = true)
-            val inMemoryKey = project.findProperty("signingInMemoryKey") as String?
-            if (!inMemoryKey.isNullOrEmpty()) {
-                signAllPublications()
-            }
-
             coordinates(wireGroupId, project.name, wireVersion)
 
             pom {
