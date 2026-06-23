@@ -10,7 +10,7 @@ kotlin = "2.2.21"
 kotlinpoet = "1.15.3"
 ktlint = "0.48.2"
 okio = "3.7.0"
-protobuf = "3.25.1"
+protobuf = "3.25.9"
 protobufGradlePlugin = "0.9.4"
 wire = "5.4.0"
 
