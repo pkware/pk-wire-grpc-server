@@ -68,17 +68,19 @@ allprojects {
     google()
   }
 
+  val javaVersion = if (project.path == ":") JavaVersion.VERSION_17 else JavaVersion.VERSION_11
+
   plugins.withId("java") {
     configure<JavaPluginExtension> {
       withSourcesJar()
-      sourceCompatibility = JavaVersion.VERSION_11
-      targetCompatibility = JavaVersion.VERSION_11
+      sourceCompatibility = javaVersion
+      targetCompatibility = javaVersion
     }
   }
 
   tasks.withType<KotlinCompile>().configureEach {
     compilerOptions {
-      jvmTarget.set(JvmTarget.JVM_11)
+      jvmTarget.set(JvmTarget.fromTarget(javaVersion.toString()))
       freeCompilerArgs.add("-Xno-optimized-callable-references")
       freeCompilerArgs.add("-Xjvm-default=all")
       // https://kotlinlang.org/docs/whatsnew13.html#progressive-mode
