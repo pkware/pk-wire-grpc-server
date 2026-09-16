@@ -18,27 +18,25 @@ package com.squareup.wire.whiteboard
 import io.grpc.stub.StreamObserver
 
 class WhiteboardImpl : WhiteboardWireGrpc.WhiteboardImplBase() {
-    override fun Whiteboard(response: StreamObserver<WhiteboardUpdate>): StreamObserver<WhiteboardCommand> {
-        return object : StreamObserver<WhiteboardCommand> {
-            override fun onNext(value: WhiteboardCommand?) {
-                response.onNext(
-                    WhiteboardUpdate(
-                        update_points = WhiteboardUpdate.UpdatePoints(
-                            listOf(
-                                Point(0, 0, 0),
-                            ),
+    override fun Whiteboard(response: StreamObserver<WhiteboardUpdate>): StreamObserver<WhiteboardCommand> = object : StreamObserver<WhiteboardCommand> {
+        override fun onNext(value: WhiteboardCommand?) {
+            response.onNext(
+                WhiteboardUpdate(
+                    update_points = WhiteboardUpdate.UpdatePoints(
+                        listOf(
+                            Point(0, 0, 0),
                         ),
                     ),
-                )
-            }
+                ),
+            )
+        }
 
-            override fun onError(t: Throwable?) {
-                response.onCompleted()
-            }
+        override fun onError(t: Throwable?) {
+            response.onCompleted()
+        }
 
-            override fun onCompleted() {
-                response.onCompleted()
-            }
+        override fun onCompleted() {
+            response.onCompleted()
         }
     }
 }
