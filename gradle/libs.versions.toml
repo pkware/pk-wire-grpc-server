@@ -11,7 +11,7 @@ ktlint = "1.6.0"
 okio = "3.18.2"
 protobuf = "4.36.1"
 protobufGradlePlugin = "0.10.0"
-wire = "7.0.1"
+wire = "7.0.3"
 
 [libraries]
 asm = { module = "org.ow2.asm:asm", version.ref = "asm" }
