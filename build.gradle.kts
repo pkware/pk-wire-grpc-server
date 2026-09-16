@@ -37,3 +37,10 @@ allprojects {
     google()
   }
 }
+
+// `:server-generator` is published from inside the `build-support` included build (see
+// `build-support/build.gradle.kts`), so it never receives its own `publish` task here. Reach it
+// explicitly so a single root `./gradlew publish` covers both `:server` and `:server-generator`.
+tasks.register("publish") {
+  dependsOn(gradle.includedBuild("build-support").task(":server-generator:publish"))
+}
