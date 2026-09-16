@@ -22,7 +22,9 @@ import io.grpc.stub.StreamObserver
 
 // This is for adapting Google style grpc stubs to Wire style grpc stubs.
 @Suppress("CheckResult")
-class MessageSourceAdapter<T : Any> : MessageSource<T>, StreamObserver<T> {
+class MessageSourceAdapter<T : Any> :
+    MessageSource<T>,
+    StreamObserver<T> {
     private var value: T? = null
     private var error: Throwable? = null
     private var completed = false
@@ -52,17 +54,21 @@ class MessageSourceAdapter<T : Any> : MessageSource<T>, StreamObserver<T> {
         monitor.leave()
     }
 
-    override fun close() {
-        throw RuntimeException("client streams cannot be closed by the server")
-    }
+    override fun close(): Unit = throw RuntimeException("client streams cannot be closed by the server")
 
     override fun read(): T? {
         monitor.enterIf(valuePresent)
         return try {
             when {
-                completed -> { null }
-                error != null -> { throw error!! }
-                else -> { value }
+                completed -> {
+                    null
+                }
+                error != null -> {
+                    throw error!!
+                }
+                else -> {
+                    value
+                }
             }
         } finally {
             value = null
